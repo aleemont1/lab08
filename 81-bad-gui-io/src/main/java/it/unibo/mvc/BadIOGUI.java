@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.List;
 //import java.nio.file.Files;
 //import java.nio.file.Files;
 //import java.util.List;
@@ -46,6 +48,8 @@ public class BadIOGUI {
         canvPanel.setLayout(new BoxLayout(canvPanel, BoxLayout.X_AXIS));
         final JButton write = new JButton("Write on file");
         canvPanel.add(write);
+        final JButton read = new JButton("Read");
+        canvPanel.add(read);
         canvas.add(canvPanel, BorderLayout.CENTER);
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,6 +71,20 @@ public class BadIOGUI {
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, e1, "Error", JOptionPane.ERROR_MESSAGE);
                     e1.printStackTrace(); // NOPMD: allowed as this is just an exercise
+                }
+            }
+        });
+
+        read.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {  
+                try {
+                    final List<String> lines = Files.readAllLines(new File(PATH).toPath());
+                    for (final String line : lines) {
+                        System.out.println(line); //NOPMD: è solo un esercizio.
+                    }
+                } catch (IOException ex) {
+                    System.out.println("ERRORE Read: " + ex);
                 }
             }
         });
@@ -94,8 +112,9 @@ public class BadIOGUI {
         /*
          * OK, ready to push the frame onscreen
          */
-        frame.setVisible(true);
         frame.pack();
+        frame.setVisible(true);
+
     }
 
     /**
